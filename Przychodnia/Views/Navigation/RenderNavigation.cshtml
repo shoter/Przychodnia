@@ -1,0 +1,30 @@
+﻿@model Przychodnia.Models.Navigation.NavigationSectionViewModel
+@{
+    ViewBag.Title = "RenderNavigation";
+}
+
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            @foreach(var child in Model.Children)
+            {
+                <li>
+                    <a href="@child.Url">
+                        @if(string.IsNullOrWhiteSpace(child.Icon) == false)
+                        {
+                            <i class="@child.Icon"></i>
+                        }
+
+                        @child.Name
+
+                    </a>
+
+                </li>
+            }
+
+
+        </ul>
+
+
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿@model Przychodnia.Models.Navigation.NavigationSectionViewModel
+
+
+
+<li>
+    <a href="@child.Url">
+        @if (string.IsNullOrWhiteSpace(child.Icon) == false)
+        {
+            <i class="@child.Icon"></i>
+        }
+
+        @child.Name
+
+    </a>
+
+</li>
