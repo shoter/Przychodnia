@@ -12,6 +12,7 @@ namespace Przychodnia.App_Start
     using Ninject.Web.Common;
     using PrzychodniaData;
     using PrzychodniaData.Repositories;
+    using Services;
 
     public static class NinjectWebCommon 
     {
@@ -65,6 +66,7 @@ namespace Przychodnia.App_Start
         {
             kernel.Bind<PrzychodniaContext>().ToSelf().InRequestScope();
             kernel.Bind<UzytkownikRepository>().ToSelf().InRequestScope();
+            kernel.Bind<UserService>().ToSelf().InRequestScope();
         }        
     }
 }

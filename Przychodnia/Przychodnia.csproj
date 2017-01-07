@@ -161,14 +161,26 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\PrzychodniaAuthorize.cs" />
+    <Compile Include="Code\Common.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MethodResult.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="enums\PopupMessageType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\RouteDataHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Helpers\TempDataHelper.cs" />
+    <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Navigation\NavigationSectionViewModel.cs" />
+    <Compile Include="Models\Navigation\TopViewModel.cs" />
+    <Compile Include="Models\PopupMessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -212,6 +224,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Navigation\RenderNavigation.cshtml" />
+    <Content Include="Views\Navigation\DisplayTemplates\NavigationSectionViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PopupMessageViewModel.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Navigation\DisplayTop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

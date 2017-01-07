@@ -1,0 +1,5 @@
+﻿@model Przychodnia.Models.PopupMessageViewModel
+
+<div class="alert @Model.MessageType.GetMessageClass()">
+    @Model.Content
+</div>

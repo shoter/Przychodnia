@@ -1,9 +1,11 @@
 ﻿using Data.Objects;
 using PrzychodniaData.Objects;
+using PrzychodniaData.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Przychodnia.Helpers
 {
@@ -12,52 +14,60 @@ namespace Przychodnia.Helpers
         static private string UzytkownikSession { get { return "UZYTKOWNIK_SESSION"; } }
 
 
-        /*public static Uzytkownik Uzytkownik
+        public static Uzytkownik Uzytkownik
         {
             get
             {
-                if(Sessio)
+                return Sesja?.Uzytkownik;
             }
-        }*/
+        }
 
         public static Sesja Sesja
         {
             get
             {
-                /*Session session = null;
-                HttpContext.Current.Session[CitizenSession] = null;
-                var sessionRepository = DependencyResolver.Current.GetService<ISessionRepository>();
-                if (HttpContext.Current.Session[CitizenSession] != null)
+                Sesja session = null;
+                HttpContext.Current.Session[UzytkownikSession] = null;
+                var sessionRepository = DependencyResolver.Current.GetService<SesjaRepository>();
+                if (HttpContext.Current.Session[UzytkownikSession] != null)
                 {
-                    session = HttpContext.Current.Session[CitizenSession] as Session;
+                    session = HttpContext.Current.Session[UzytkownikSession] as Sesja;
                     //session = sessionRepository.FirstOrDefault(s => s.ID == session.ID);
                 }
-                else if (HttpContext.Current.Request.Cookies[CitizenSession] != null)
+                else if (HttpContext.Current.Request.Cookies[UzytkownikSession] != null)
                 {
-                    var cookie = HttpContext.Current.Request.Cookies[CitizenSession].Value;
+                    var cookie = HttpContext.Current.Request.Cookies[UzytkownikSession].Value;
 
 
                     session = sessionRepository
-                        .FirstOrDefault(s => s.Cookie == cookie);
+                        .Get(cookie);
+
                     if (session != null)
                     {
                         if (session.IP != ClientIP && ClientIP != "::1" && ClientIP != "127.0.0.1")
                             session = null;
-                        else if (session.ExpirationDate.CompareTo(DateTime.Now) < 0)
+                        else if (session.DataWygasniecia.CompareTo(DateTime.Now) < 0)
                         {
                             sessionRepository.Remove(session.ID);
                             session = null;
-                            sessionRepository.SaveChanges();
                         }
-                    }*/
-                //}
+                    }
+                }
 
-                return new Sesja();
+                return session;
             }
             set
             {
-             //   HttpContext.Current.Session[CitizenSession] = value;
-              //  HttpContext.Current.Response.Cookies.Add(new HttpCookie(CitizenSession, value.Cookie));
+                HttpContext.Current.Session[UzytkownikSession] = value;
+                HttpContext.Current.Response.Cookies.Add(new HttpCookie(UzytkownikSession, value.Ciasteczko));
+            }
+        }
+
+        public static string ClientIP
+        {
+            get
+            {
+                return HttpContext.Current.Request.UserHostAddress;
             }
         }
     }

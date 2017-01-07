@@ -1,16 +1,27 @@
 ﻿@model Przychodnia.Models.Navigation.NavigationSectionViewModel
 
 
-
 <li>
-    <a href="@child.Url">
-        @if (string.IsNullOrWhiteSpace(child.Icon) == false)
+    <a href="@Model.Url">
+        @if (string.IsNullOrWhiteSpace(Model.Icon) == false)
         {
-            <i class="@child.Icon"></i>
+            <i class="@Model.Icon"></i>
         }
 
-        @child.Name
-
+        @Model.Name
+        @if (Model.HaveChilds)
+        {
+            <span class="fa arrow"></span>
+        }
     </a>
+@if (Model.HaveChilds)
+{
+    <ul class="nav nav-second-level">
+        @foreach(var child in Model.Children)
+        {
+            @Html.DisplayFor(m => child)
+        }
+    </ul>
+}
 
 </li>
