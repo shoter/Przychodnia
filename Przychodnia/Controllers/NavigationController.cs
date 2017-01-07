@@ -37,17 +37,32 @@ namespace Przychodnia.Controllers
                     Name = "Administrator",
                     Icon = "fa fa-wrench"
                 };
+                vm.Add(admin);
+
+                var userManagement = new NavigationSectionViewModel()
+                {
+                    Name = "Zarządzanie użytkownikami",
+                    Icon = "fa fa-user"
+                };
+                admin.Add(userManagement);
 
                 var addUser = new NavigationSectionViewModel()
                 {
                     Name = "Dodaj użytkownika",
                     Icon = "fa fa-user-plus",
-                    Url = Url.Action("AddUser", "Admin")
+                    Url = Url.Action("AddUser", "User")
                 };
 
-                admin.Children.Add(addUser);
+                var Users = new NavigationSectionViewModel()
+                {
+                    Name = "Użytkownicy",
+                    Icon = "fa fa-users",
+                    Url = Url.Action("Index", "User")
+                };
 
-                vm.Add(admin);
+                
+                userManagement.Add(addUser);
+                userManagement.Add(Users);
             }
 
             vm.Add(home);

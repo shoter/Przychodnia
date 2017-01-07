@@ -52,6 +52,24 @@ namespace PrzychodniaData.Repositories
             return sesja;
         }
 
+        public void Update(int id, DateTime data)
+        {
+            var idParam = Parameter("ID", id);
+            var dataParam = Parameter("datawygasniecia", data);
+
+            using (DisposableConnection)
+            {
+                var conn = DisposableConnection.Connection;
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "select sp_upd_sesje(:ID, :datawygasniecia)"
+                NpgsqlCommand cmd = new NpgsqlCommand(, conn);
+                cmd.Add(idParam);
+                cmd.Add(dataParam);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public void Insert(string ip, string cookie, DateTime data, int userID)
         {
             var ipParam = Parameter("IP", ip);

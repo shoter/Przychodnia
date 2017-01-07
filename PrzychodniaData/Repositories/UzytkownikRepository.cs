@@ -19,30 +19,33 @@ namespace PrzychodniaData.Repositories
 
         public Uzytkownik Get(string username, string password)
         {
-            var nameParam = Parameter("nazwa", username);
-            var passParam = Parameter("haslo", password);
+            using (DisposableConnection)
+            {
+                var nameParam = Parameter("nazwa", username);
+                var passParam = Parameter("haslo", password);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
-            conn.Open();
+                NpgsqlConnection conn = DisposableConnection.Connection;
 
-            NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:nazwa,:haslo)", conn);
-            cmd.Add(nameParam);
-            cmd.Add(passParam);
+                NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:nazwa,:haslo)", conn);
+                cmd.Add(nameParam);
+                cmd.Add(passParam);
 
-            return getUser(conn, ref cmd);
+                return getUser(conn, ref cmd);
+            }
         }
 
         public Uzytkownik Get(int id)
         {
-            var idParam = Parameter("id", id);
+            using (DisposableConnection)
+            {
+                var idParam = Parameter("id", id);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
-            conn.Open();
+                NpgsqlConnection conn = DisposableConnection.Connection;
+                NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:id)", conn);
+                cmd.Add(idParam);
 
-            NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:id)", conn);
-            cmd.Add(idParam);
-
-            return getUser(conn, ref cmd);
+                return getUser(conn, ref cmd);
+            }
         }
 
         private Uzytkownik getUser(NpgsqlConnection conn, ref NpgsqlCommand cmd)
@@ -77,28 +80,57 @@ namespace PrzychodniaData.Repositories
                 user.Prawa.Add((PrawoUzytkownikaEnum)id);
             }
 
-            conn.Close();
 
             return user;
         }
 
         public void CreateAccount(string username, string password, int? lekarzID)
         {
-            var nameParam = Parameter("nazwa", username);
-            var passParam = Parameter("haslo", password);
-            var lekarzParam = Parameter("lekarzid", lekarzID);
+            using (DisposableConnection)
+            {
+                var nameParam = Parameter("nazwa", username);
+                var passParam = Parameter("haslo", password);
+                var lekarzParam = Parameter("lekarzid", lekarzID);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
-            conn.Open();
+                NpgsqlConnection conn = DisposableConnection.Connection;
 
-            NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_uzytkownicy(:nazwa,:haslo, :lekarzid)", conn);
-            cmd.Add(nameParam);
-            cmd.Add(passParam);
-            cmd.Add(lekarzParam);
+                NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_uzytkownicy(:nazwa,:haslo, :lekarzid)", conn);
+                cmd.Add(nameParam);
+                cmd.Add(passParam);
+                cmd.Add(lekarzParam);
 
-            cmd.ExecuteNonQuery();
+                var result = cmd.ExecuteNonQuery();
 
-            conn.Close();
+            }
+        }
+
+        public void CreateAccount(string username, string password, string lekarzName, string lekarzSurname, string lekarzPesel, DateTime lekarzBirthDate, bool mezczyzna)
+        {
+            using (DisposableConnection)
+            {
+                var nameParam = Parameter("nazwa", username);
+                var passParam = Parameter("haslo", password);
+                var lekarzNameParam = Parameter("imie", lekarzName);
+                var lekarzSurnameParam = Parameter("nazwisko", lekarzSurname);
+                var lekarzPeselParam = Parameter("pesel", lekarzPesel);
+                var lekarzDateParam = Parameter("data", lekarzBirthDate, NpgsqlTypes.NpgsqlDbType.Date);
+                var mezczyznaParam = Parameter("mezczyzna", mezczyzna);
+
+                NpgsqlConnection conn = DisposableConnection.Connection;
+
+                NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_uzytkownicy(:nazwa,:haslo, :imie, :nazwisko, :pesel, :data, :mezczyzna)", conn);
+                cmd.Add(nameParam);
+                cmd.Add(passParam);
+                cmd.Add(lekarzNameParam);
+                cmd.Add(lekarzSurnameParam);
+                cmd.Add(lekarzPeselParam);
+                cmd.Add(lekarzDateParam);
+                cmd.Add(mezczyznaParam);
+
+
+                var result = cmd.ExecuteNonQuery();
+
+            }
         }
     }
 }

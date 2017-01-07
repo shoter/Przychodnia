@@ -26,7 +26,10 @@ namespace Przychodnia
                       "~/vendor/metisMenu/metisMenu.min.js",
                       "~/vendor/raphael/raphael.min.js",
                       "~/vendor/morrisjs/morris.min.js",
-                      "~/Scripts/data.js"
+                      "~/Scripts/data.js",
+                      "~/Scripts/przychodnia.hidener.js",
+                      "~/Scripts/jquery-ui.js"
+
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -35,7 +38,10 @@ namespace Przychodnia
                       "~/Content/sb-admin-2.css",
                       "~/vendor/metisMenu/metisMenu.min.css",
                       "~/vendor/morrisjs/morris.css",
-                      "~/vendor/font-awesome/css/font-awesome.min.css"));
+                      "~/vendor/font-awesome/css/font-awesome.min.css",
+                      "~/Content/jquery-ui.css",
+                      "~/Content/jquery-ui.structure.css",
+                      "~/Content/jquery-ui.theme.css"));
         }
     }
 }

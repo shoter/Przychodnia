@@ -54,12 +54,19 @@ namespace Przychodnia.Helpers
                     }
                 }
 
+                if(session != null)
+                {
+                    sessionRepository.Update(session.ID, DateTime.Now.AddHours(2));
+                }
                 return session;
             }
             set
             {
                 HttpContext.Current.Session[UzytkownikSession] = value;
-                HttpContext.Current.Response.Cookies.Add(new HttpCookie(UzytkownikSession, value.Ciasteczko));
+                if (value != null)
+                    HttpContext.Current.Response.Cookies.Add(new HttpCookie(UzytkownikSession, value.Ciasteczko));
+                else
+                    HttpContext.Current.Response.Cookies.Remove(UzytkownikSession);
             }
         }
 

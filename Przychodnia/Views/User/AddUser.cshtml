@@ -1,0 +1,78 @@
+﻿@model Przychodnia.Models.Users.AddUserViewModel
+@{
+    ViewBag.Title = "AddUser";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dodaj użytkownika</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+        <fieldset>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Nazwa użytkownika" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Hasło" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.RepeatPassword, new { @class = "form-control", placeholder = "Powtórz hasło" })
+            </div>
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBoxFor(m => m.Mezczyzna)
+                    Czy mężczyzna?
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input data-checkbox_hidener data-hide_element1="#staryLekarz" data-hide_element2="#nowyLekarz" name="CreateNewOsoba" id="CreateNewOsoba" type="checkbox" value="true" />
+                    Stwórz nowego lekarza
+                </label>
+            </div>
+            <div id="staryLekarz">
+                <div class="form-group">
+                    <label>Wybierz lekarza:</label>
+                    <select class="form-control">
+                        <option>Adam Adamski</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="nowyLekarz" style="display:none">
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Imię" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Nazwisko" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Pesel, new { @class = "form-control", placeholder = "Pesel" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control datepicker", placeholder = "Data urodzenia" })
+                </div>
+            </div>
+
+
+            <!-- Change this to a button or input when using this as a form -->
+            <button class="btn btn-lg btn-success btn-block">Dodaj użytkownika</button>
+        </fieldset>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
+}

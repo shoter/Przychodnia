@@ -18,23 +18,33 @@ namespace PrzychodniaData.Repositories
             Context = context;
         }
 
-
+        internal DisposableConnection DisposableConnection
+        {
+            get
+            {
+                return Context.DisposableConnection;
+            }
+        }
 
         protected NpgsqlParameter Parameter<T>(string fieldName, T value)
         {
+            return Parameter(fieldName, value, getDbType(value));
+        }
+
+        protected NpgsqlParameter Parameter<T>(string fieldName, T value, NpgsqlDbType type)
+        {
+            var param = new NpgsqlParameter(fieldName, type);
+
             if (value == null)
             {
-                var param =  new NpgsqlParameter(fieldName, getDbType(value));
                 param.Value = DBNull.Value;
-                return param;
             }
-
             else
             {
-                var param = new NpgsqlParameter(fieldName, getDbType(value));
                 param.Value = value;
-                return param;
             }
+
+            return param;
         }
 
         
@@ -54,6 +64,8 @@ namespace PrzychodniaData.Repositories
                 return NpgsqlDbType.Integer;
             if (type == typeof(DateTime))
                 return NpgsqlDbType.Timestamp;
+            if (type == typeof(bool))
+                return NpgsqlDbType.Boolean;
             
 
             throw new NotImplementedException();

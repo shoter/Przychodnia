@@ -1,4 +1,6 @@
-﻿using Przychodnia.Models.Account;
+﻿using Przychodnia.Attributes;
+using Przychodnia.Helpers;
+using Przychodnia.Models.Account;
 using Przychodnia.Services;
 using PrzychodniaData.Repositories;
 using System;
@@ -32,19 +34,42 @@ namespace Przychodnia.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel vm)
         {
-            var user = userService.Login(vm.UserName, vm.Password);
+            try
+            {
+                var user = userService.Login(vm.UserName, vm.Password);
 
-            if(user != null)
+                if (user != null)
+                {
+                    AddSuccess("Zalogowano jako {0}.", user.nazwaUzytkownika);
+                    return RedirectToHome();
+                }
+                else
+                {
+                    AddError("Login użytkownika lub/i hasło są nieprawidłowe!");
+                }
+
+            } catch(Exception e)
             {
-                AddSuccess("Zalogowano jako {0}.", user.nazwaUzytkownika);
-                return RedirectToHome();
-            }
-            else
-            {
-                AddError("Login użytkownika lub/i hasło są nieprawidłowe!");
+                AddError(e.Message);
+                
             }
 
             return View(vm);
+        }
+
+        [HttpGet]
+        [PrzychodniaAuthorize]
+        public ActionResult Logout()
+        {
+            try
+            {
+                sesjaRepository.Remove(SessionHelper.Uzytkownik.ID);
+                SessionHelper.Sesja = null;
+            } catch(Exception e)
+            {
+                AddError(e.Message);
+            }
+            return RedirectToAction("Login");
         }
     }
 }

@@ -16,7 +16,7 @@
     </a>
 @if (Model.HaveChilds)
 {
-    <ul class="nav nav-second-level">
+    <ul class="nav nav-@(Model.LevelClass)-level">
         @foreach(var child in Model.Children)
         {
             @Html.DisplayFor(m => child)

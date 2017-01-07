@@ -23,8 +23,6 @@ namespace Przychodnia.Controllers
         [PrzychodniaAuthorize]
         public ActionResult Index()
         {
-            uzytkownikRepository.CreateAccount("test", "test", null);
-            var user = uzytkownikRepository.Get("admin", "admin");
             return View();
         }
 
