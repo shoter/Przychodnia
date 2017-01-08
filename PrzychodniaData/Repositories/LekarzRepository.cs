@@ -22,8 +22,8 @@ namespace PrzychodniaData.Repositories
                 var cmd = DisposableConnection.CreateCommand("select sp_ins_przydzialy(:id, :lekarzid, :poczatek, :koniec)");
                 cmd.Add("id", przychodniaID);
                 cmd.Add("lekarzid", lekarzID);
-                cmd.Add("poczatek", poczatekPrzydzialu, NpgsqlDbType.Date);
-                cmd.Add("koniec", koniecPrzydzialu, NpgsqlDbType.Date);
+                cmd.Add("poczatek", poczatekPrzydzialu);
+                cmd.Add("koniec", koniecPrzydzialu);
 
                 cmd.ExecuteNonQuery();
             }

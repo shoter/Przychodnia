@@ -24,7 +24,7 @@ namespace PrzychodniaData.Repositories
                 cmd.Add("lekarzid", lekarzID);
                 cmd.Add("przychodniaid", przychodniaID);
                 cmd.Add("poczatek", poczatek);
-                cmd.Add("koniec", koniec, NpgsqlDbType.Date);
+                cmd.Add("koniec", koniec);
 
                 cmd.ExecuteNonQuery();
             }
@@ -72,7 +72,8 @@ namespace PrzychodniaData.Repositories
                     LekarzID = reader.ToInt("lekarzid"),
                     PrzychodniaID = reader.ToInt("przychodniaid"),
                     PoczatekPrzydzialu = reader.ToDate("poczatek").Value,
-                    KoniecPrzydzialu = reader.ToDate("koniec")
+                    KoniecPrzydzialu = reader.ToDate("koniec"),
+                    PrzychodniaNazwa = reader.ToString("przychodniaNazwa")
                 });
             }
 

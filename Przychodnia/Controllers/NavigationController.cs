@@ -102,9 +102,87 @@ namespace Przychodnia.Controllers
                 {
                     Name = "Przychodnie",
                     Icon = "fa fa-medkit"
-                };
+                }; manager.Add(przychodnie);
 
-                manager.Add(przychodnie);
+                foreach (var kierownik in SessionHelper.Uzytkownik.Kierownicy)
+                {
+                    var przychodnia = new NavigationSectionViewModel()
+                    {
+                        Name = kierownik.PrzychodniaNazwa,
+                        Icon = "fa fa-wrench",
+                        Url = Url.Action("Manage", "Management", new { przychodniaID = kierownik.PrzychodniaID })
+                    };przychodnie.Add(przychodnia);
+                    
+                }
+
+                
+            }
+
+            if(SessionHelper.Uzytkownik.Is(PrawoUzytkownikaEnum.Lekarz))
+            {
+                var manager = new NavigationSectionViewModel()
+                {
+                    Name = "Lekarz",
+                    Icon = "fa fa-stethoscope"
+                }; vm.Add(manager);
+
+                var pacjenci = new NavigationSectionViewModel()
+                {
+                    Name = "Pacjenci",
+                    Icon = "fa fa-users"
+                }; manager.Add(pacjenci);
+
+                var przegladaj = new NavigationSectionViewModel()
+                {
+                    Name = "Lista pacjentów",
+                    Icon = "fa fa-wheelchair",
+                    Url = Url.Action("Index", "Pacjent")
+                }; pacjenci.Add(przegladaj);
+
+                var dodaj = new NavigationSectionViewModel()
+                {
+                    Name = "Dodaj pacjenta",
+                    Url = Url.Action("Add", "Pacjent")
+                }; pacjenci.Add(dodaj);
+
+                var choroby = new NavigationSectionViewModel()
+                {
+                    Name = "Choroby",
+                    Icon = "fa fa-medkit"
+                }; manager.Add(choroby);
+
+                var dziennik = new NavigationSectionViewModel()
+                {
+                    Name = "Dzienniki chorób",
+                    Icon = "fa fa-address-book",
+                    Url = Url.Action("Index", "Choroba")
+                }; choroby.Add(dziennik);
+
+                var dodajWpis = new NavigationSectionViewModel()
+                {
+                    Name = "Dodaj wpis",
+                    Url = Url.Action("Add", "Choroba")
+                }; choroby.Add(dodajWpis);
+
+                var pomiary = new NavigationSectionViewModel()
+                {
+                    Name = "Pomiary",
+                    Icon = "fa fa-heartbeat"
+                };manager.Add(pomiary);
+
+                var pomiaryAdd = new NavigationSectionViewModel()
+                {
+                    Name = "Dodaj nowy pomiar",
+                    Url = Url.Action("Dodaj", "Pomiar")
+                }; pomiary.Add(pomiaryAdd);
+
+                var pomiaryList = new NavigationSectionViewModel()
+                {
+                    Name = "Lista pomiarów",
+                    Url = Url.Action("Index", "Pomiar")
+                }; pomiary.Add(pomiaryList);
+
+                
             }
 
             

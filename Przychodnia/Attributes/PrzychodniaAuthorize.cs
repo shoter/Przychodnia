@@ -40,7 +40,7 @@ namespace Przychodnia.Attributes
             var session = SessionHelper.Sesja;
             if (session != null)
             {
-                DependencyResolver.Current.GetService<SesjaRepository>().Update(session.ID, DateTime.Now.AddHours(2));
+                DependencyResolver.Current.GetService<SesjaRepository>().Update(session.ID, DateTime.Now.ToUniversalTime().AddHours(2));
             }
 
             return true;

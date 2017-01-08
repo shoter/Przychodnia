@@ -117,6 +117,7 @@ namespace Przychodnia.Controllers
 
                 foreach (var prawo in vm.Prawa)
                 {
+                    if(prawo.Prawo == PrawoUzytkownikaEnum.Administrator)
                     settingsString += string.Format("{0},{1};", (int)prawo.Prawo, prawo.Value ? 1 : 0);
                 }
 
@@ -130,7 +131,10 @@ namespace Przychodnia.Controllers
                     settingsString += string.Format("{0},{1};", (int)kierownik.PrzychodniaID, kierownik.Value ? 1 : 0);
                 }
                 if (string.IsNullOrWhiteSpace(settingsString) == false)
+                {
+                    settingsString = settingsString.Substring(0, settingsString.Length - 1);
                     kierownikRepository.UpdateKierownik(vm.LekarzID.Value, settingsString);
+                }
 
 
                 var user = uzytkownikRepository.Get(vm.UserID);
@@ -151,5 +155,7 @@ namespace Przychodnia.Controllers
                 return NullView();
             }
         }
+
+
     }
 }

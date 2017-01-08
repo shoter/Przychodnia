@@ -42,7 +42,7 @@ namespace Przychodnia.Services
 
             var cookie = Common.Base64Encode(uzytkownik.nazwaUzytkownika + IP);
 
-            sesjaRepository.Insert(IP, cookie , DateTime.Now.AddHours(1), uzytkownik.ID);
+            sesjaRepository.Insert(IP, cookie , DateTime.Now.ToUniversalTime().AddHours(1), uzytkownik.ID);
 
             var sesja = sesjaRepository.Get(cookie);
 

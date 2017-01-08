@@ -45,7 +45,7 @@ namespace Przychodnia.Helpers
                     {
                         if (session.IP != ClientIP && ClientIP != "::1" && ClientIP != "127.0.0.1")
                             session = null;
-                        else if (session.DataWygasniecia.CompareTo(DateTime.Now) < 0)
+                        else if (session.DataWygasniecia.CompareTo(DateTime.Now.ToUniversalTime()) < 0)
                         {
                             sessionRepository.Remove(session.ID);
                             session = null;

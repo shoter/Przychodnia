@@ -48,7 +48,7 @@ namespace Przychodnia.Models.Users
                 Kierownictwo.Add(new ChangeUserKierownikViewModel()
                 {
                     PrzychodniaID = przychodnia.ID,
-                    Value = user.Kierownicy.Any(k => k.PrzychodniaID == przychodnia.ID),
+                    Value = user.Kierownicy.Any(k => k.PrzychodniaID == przychodnia.ID && k.KoniecPrzydzialu.HasValue == false),
                     Nazwa = przychodnia.Nazwa
                 });
             }

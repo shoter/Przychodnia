@@ -50,7 +50,7 @@ namespace Przychodnia.Controllers
         {
             try
             {
-                lekarzRepository.AddPrzydzial(vm.LekarzID, vm.PrzychodniaID, DateTime.Now, null);
+                lekarzRepository.AddPrzydzial(vm.LekarzID, vm.PrzychodniaID, DateTime.Now.ToUniversalTime(), null);
                 AddSuccess("Dodano przydział!");
                 return RedirectToAction("Manage", new { przychodniaID = vm.PrzychodniaID });
             }

@@ -12,5 +12,6 @@ namespace PrzychodniaData.Objects
         public int PrzychodniaID { get; set; }
         public DateTime PoczatekPrzydzialu { get; set; }
         public DateTime? KoniecPrzydzialu { get; set; }
+        public string PrzychodniaNazwa { get; set; }
     }
 }
