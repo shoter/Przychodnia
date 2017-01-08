@@ -29,8 +29,9 @@ namespace Przychodnia.Controllers
                 Icon = "fa fa-home",
                 Url = Url.Action("Index", "Home")
             };
+            vm.Add(home);
 
-            if(SessionHelper.Uzytkownik.Is(PrawoUzytkownikaEnum.Administrator))
+            if (SessionHelper.Uzytkownik.Is(PrawoUzytkownikaEnum.Administrator))
             {
                 var admin = new NavigationSectionViewModel()
                 {
@@ -44,6 +45,7 @@ namespace Przychodnia.Controllers
                     Name = "Zarządzanie użytkownikami",
                     Icon = "fa fa-user"
                 };
+
                 admin.Add(userManagement);
 
                 var addUser = new NavigationSectionViewModel()
@@ -60,12 +62,52 @@ namespace Przychodnia.Controllers
                     Url = Url.Action("Index", "User")
                 };
 
-                
+
+                var medicalManagement = new NavigationSectionViewModel()
+                {
+                    Name = "Zarządzanie przychodniami",
+                    Icon = "fa fa-medkit"
+                };
+                admin.Add(medicalManagement);
+
+                var addMedical = new NavigationSectionViewModel()
+                {
+                    Name = "Dodaj przychodnie",
+                    Icon = "fa fa-plus-square",
+                    Url = Url.Action("Add", "Management")
+                };
+
+                var medicals = new NavigationSectionViewModel()
+                {
+                    Name = "Przychodnie",
+                    Icon = "fa fa-medkit",
+                    Url = Url.Action("Index", "Management")
+                };
+
+                medicalManagement.Add(addMedical);
+                medicalManagement.Add(medicals);
+
                 userManagement.Add(addUser);
                 userManagement.Add(Users);
             }
 
-            vm.Add(home);
+            if(SessionHelper.Uzytkownik.Is(PrawoUzytkownikaEnum.Kierownik))
+            {
+                var manager = new NavigationSectionViewModel()
+                {
+                    Name = "Kierownik",
+                    Icon = "fa fa-suitcase"
+                }; vm.Add(manager);
+                var przychodnie = new NavigationSectionViewModel()
+                {
+                    Name = "Przychodnie",
+                    Icon = "fa fa-medkit"
+                };
+
+                manager.Add(przychodnie);
+            }
+
+            
         }
 
         public PartialViewResult DisplayTop()

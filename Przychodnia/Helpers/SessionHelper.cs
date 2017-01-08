@@ -27,7 +27,6 @@ namespace Przychodnia.Helpers
             get
             {
                 Sesja session = null;
-                HttpContext.Current.Session[UzytkownikSession] = null;
                 var sessionRepository = DependencyResolver.Current.GetService<SesjaRepository>();
                 if (HttpContext.Current.Session[UzytkownikSession] != null)
                 {
@@ -54,10 +53,8 @@ namespace Przychodnia.Helpers
                     }
                 }
 
-                if(session != null)
-                {
-                    sessionRepository.Update(session.ID, DateTime.Now.AddHours(2));
-                }
+                if (session != null)
+                    Sesja = session;
                 return session;
             }
             set

@@ -1,5 +1,6 @@
 ﻿using Przychodnia.Helpers;
 using PrzychodniaData.Enums;
+using PrzychodniaData.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,18 +31,39 @@ namespace Przychodnia.Attributes
             if (uzytkownik == null)
                 return false;
 
-            /*var playerType = player.GetPlayerType();
 
-            if (!isAuthorized(playerType))
+            if (!isAuthorized(uzytkownik.Prawa))
             {
                 return false;
             }
-            */
+            
+            var session = SessionHelper.Sesja;
+            if (session != null)
+            {
+                DependencyResolver.Current.GetService<SesjaRepository>().Update(session.ID, DateTime.Now.AddHours(2));
+            }
+
             return true;
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+            var uzytkownik = SessionHelper.Uzytkownik;
+
+            if (uzytkownik != null && !isAuthorized(uzytkownik.Prawa))
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                new RouteValueDictionary(
+                    new
+                    {
+                        controller = "Home",
+                        action = "Index"
+                    })
+                );
+
+                TempDataHelper.AddMessage(filterContext.Controller.TempData, new Models.PopupMessageViewModel(string.Format("Nie jesteś {0} aby wykonać tą akcje", Authorized), enums.PopupMessageType.Error));
+            }
+            else
             filterContext.Result = new RedirectToRouteResult(
                 new RouteValueDictionary(
                     new
@@ -57,10 +79,8 @@ namespace Przychodnia.Attributes
             if (Authorized == null)
                 return true;
 
-            return true;
-            /*if ((int)prawo >= (int)Authorized)
-                return true;
-            return false;*/
+
+           return rights.Contains(Authorized.Value) ;
         }
     }
 }

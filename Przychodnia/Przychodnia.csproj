@@ -182,6 +182,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\MethodResult.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -197,7 +198,13 @@
     <Compile Include="Models\Navigation\NavigationSectionViewModel.cs" />
     <Compile Include="Models\Navigation\TopViewModel.cs" />
     <Compile Include="Models\PopupMessageViewModel.cs" />
+    <Compile Include="Models\Przychodnie\AddPrzychodniaViewModel.cs" />
+    <Compile Include="Models\Przychodnie\AddPrzydzialViewModel.cs" />
+    <Compile Include="Models\Przychodnie\ListPrzychodnieViewModel.cs" />
+    <Compile Include="Models\Przychodnie\ManagePrzychodniaViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
+    <Compile Include="Models\Users\ChangeUserViewModel.cs" />
+    <Compile Include="Models\Users\UserListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Validator\IValidator.cs" />
@@ -409,6 +416,13 @@
     <Content Include="vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="vendor\font-awesome\scss\_variables.scss" />
     <Content Include="Views\User\AddUser.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\ChangeUser.cshtml" />
+    <Content Include="Views\Management\Add.cshtml" />
+    <Content Include="Views\Management\Index.cshtml" />
+    <Content Include="Views\Management\Manage.cshtml" />
+    <Content Include="Views\Shared\_BigLayout.cshtml" />
+    <Content Include="Views\Management\AddPrzydzial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

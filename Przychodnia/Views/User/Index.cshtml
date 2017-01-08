@@ -1,0 +1,64 @@
+﻿@model Przychodnia.Models.Users.UserListViewModel
+@{
+    ViewBag.Title = "Lista użytkowników";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Lista użytkowników</h3>
+        
+    </div>
+    
+    <div class="panel-body">
+        <div>
+            @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+            {
+                @Html.DropDownListFor(m => m.AktualnePrawoID, Model.Prawa, new { @class = "form-control" })
+                <div class="row">
+                    <div class="col-sm-12"  style="overflow:hidden">
+                        <button class="btn btn-large btn-info pull-left">Szukaj</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <hr/>
+
+        <table class="table table-striped table-bordered table-hover" data-tables>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>ID</td>
+                    <td>Nazwa użytkownika</td>
+                    <td>LekarzID</td>
+                    <td>Imię</td>
+                    <td>Nazwisko</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var user in Model.Uzytkownicy)
+                {
+                    <tr>
+                        <td><a title="Zmień uprawnienia użytkownika" href="@Url.Action("ChangeUser", new { userID = user.ID })"><i class="fa fa-wrench"></i></a></td>
+                        <td>@user.ID</td>
+                        <td>@user.nazwaUzytkownika</td>
+                        <td>@user.LekarzID</td>
+                        <td>@(user.Lekarz == null ? "" : user.Lekarz.Imie)</td>
+                        <td>@(user.Lekarz == null ? "" : user.Lekarz.Nazwisko)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $('[data-tables]').DataTable({
+            responsive: true
+        });
+    </script>
+    
+    }

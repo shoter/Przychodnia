@@ -23,11 +23,12 @@ namespace PrzychodniaData.Repositories
         {
             var cookieParam = Parameter("ciastko", cookie);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
+            var conn = Context.Database.Connection;
             conn.Open();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "select * from sp_sel_sesje(:ciastko)";
 
-            NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_sesje(:ciastko)", conn);
-            cmd.Add(cookieParam);
+            cmd.Parameters.Add(cookieParam);
 
             var reader = cmd.ExecuteReader();
 
@@ -60,11 +61,11 @@ namespace PrzychodniaData.Repositories
             using (DisposableConnection)
             {
                 var conn = DisposableConnection.Connection;
+
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "select sp_upd_sesje(:ID, :datawygasniecia)"
-                NpgsqlCommand cmd = new NpgsqlCommand(, conn);
-                cmd.Add(idParam);
-                cmd.Add(dataParam);
+                cmd.CommandText = "select sp_upd_sesje(:ID, :datawygasniecia)";
+                cmd.Parameters.Add(idParam);
+                cmd.Parameters.Add(dataParam);
 
                 cmd.ExecuteNonQuery();
             }
@@ -77,14 +78,14 @@ namespace PrzychodniaData.Repositories
             var dataParam = Parameter("datawygasniecia", data);
             var uzytkownikParam = Parameter("uzytkownikid", userID);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
+            var conn = Context.Database.Connection;
             conn.Open();
-
-            NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_sesje(:IP, :ciasteczko, :datawygasniecia, :uzytkownikid)", conn);
-            cmd.Add(ipParam);
-            cmd.Add(ciasteczkoParam);
-            cmd.Add(dataParam);
-            cmd.Add(uzytkownikParam);
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "select sp_ins_sesje(:IP, :ciasteczko, :datawygasniecia, :uzytkownikid)";
+            cmd.Parameters.Add(ipParam);
+            cmd.Parameters.Add(ciasteczkoParam);
+            cmd.Parameters.Add(dataParam);
+            cmd.Parameters.Add(uzytkownikParam);
 
             cmd.ExecuteNonQuery();
 
@@ -95,12 +96,12 @@ namespace PrzychodniaData.Repositories
         {
             var uzytkownikParam = Parameter("uzytkownikid", uzytkownikID);
 
-            NpgsqlConnection conn = Context.NpgsqlConnection;
+            var conn = Context.Database.Connection;
             conn.Open();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "select sp__del_sesje(:uzytkownikid)";
 
-            NpgsqlCommand cmd = new NpgsqlCommand("select sp__del_sesje(:uzytkownikid)", conn);
-
-            cmd.Add(uzytkownikParam);
+            cmd.Parameters.Add(uzytkownikParam);
 
             cmd.ExecuteNonQuery();
 

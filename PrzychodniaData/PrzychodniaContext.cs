@@ -32,7 +32,7 @@ namespace PrzychodniaData
         {
             get
             {
-                return new DisposableConnection(NpgsqlConnection);
+                return new DisposableConnection(Database.Connection);
             }
         }
     
@@ -59,6 +59,13 @@ namespace PrzychodniaData
         {
             if(Connection.State != System.Data.ConnectionState.Closed)
                 Connection.Close();
+        }
+
+        public DbCommand CreateCommand(string commandText)
+        {
+            DbCommand cmd = Connection.CreateCommand();
+            cmd.CommandText = commandText;
+            return cmd;
         }
     }
 }

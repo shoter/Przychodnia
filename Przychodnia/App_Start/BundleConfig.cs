@@ -26,6 +26,9 @@ namespace Przychodnia
                       "~/vendor/metisMenu/metisMenu.min.js",
                       "~/vendor/raphael/raphael.min.js",
                       "~/vendor/morrisjs/morris.min.js",
+                      "~/vendor/datatables-plugins/dataTables.bootstrap.min.js",
+                      "~/vendor/datatables-responsive/dataTables.responsive.js",
+                      "~/vendor/datatables/js/jquery.dataTables.min.js",
                       "~/Scripts/data.js",
                       "~/Scripts/przychodnia.hidener.js",
                       "~/Scripts/jquery-ui.js"
@@ -39,6 +42,11 @@ namespace Przychodnia
                       "~/vendor/metisMenu/metisMenu.min.css",
                       "~/vendor/morrisjs/morris.css",
                       "~/vendor/font-awesome/css/font-awesome.min.css",
+                      "~/vendor/datatables/css/dataTables.uikit.css",
+                      "~/vendor/datatables/css/jquery.dataTables.css",
+                      "~/vendor/datatables/css/dataTables.material.css",
+                      "~/vendor/datatables-plugins/dataTables.bootstrap.css",
+                      "~/vendor/datatables-responsive/dataTables.responsive.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery-ui.structure.css",
                       "~/Content/jquery-ui.theme.css"));

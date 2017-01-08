@@ -1,0 +1,28 @@
+﻿@model Przychodnia.Models.Przychodnie.AddPrzychodniaViewModel
+
+@{
+    ViewBag.Title = "Dodaj przychodnie";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dodaj przychodnie</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Nazwa, new { @class = "form-control", placeholder = "Nazwa przychodni" })
+                </div>
+
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj przychodnie</button>
+            </fieldset>
+        }
+    </div>
+</div>

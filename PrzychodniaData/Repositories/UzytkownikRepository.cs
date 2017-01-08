@@ -1,9 +1,11 @@
 ﻿using Data.Objects;
 using Npgsql;
 using PrzychodniaData.Enums;
+using PrzychodniaData.Objects;
 using PrzychodniaData.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -13,8 +15,10 @@ namespace PrzychodniaData.Repositories
 {
     public class UzytkownikRepository :RepositoryBase
     {
-        public UzytkownikRepository(PrzychodniaContext context) : base(context)
+        private readonly KierownikRepository kierownikRepository;
+        public UzytkownikRepository(PrzychodniaContext context, KierownikRepository kierownikRepository) : base(context)
         {
+            this.kierownikRepository = kierownikRepository;
         }
 
         public Uzytkownik Get(string username, string password)
@@ -24,11 +28,13 @@ namespace PrzychodniaData.Repositories
                 var nameParam = Parameter("nazwa", username);
                 var passParam = Parameter("haslo", password);
 
-                NpgsqlConnection conn = DisposableConnection.Connection;
+                var conn = DisposableConnection.Connection;
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "select * from sp_sel_uzytkownicy(:nazwa,:haslo)";
 
-                NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:nazwa,:haslo)", conn);
-                cmd.Add(nameParam);
-                cmd.Add(passParam);
+
+                cmd.Parameters.Add(nameParam);
+                cmd.Parameters.Add(passParam);
 
                 return getUser(conn, ref cmd);
             }
@@ -40,15 +46,74 @@ namespace PrzychodniaData.Repositories
             {
                 var idParam = Parameter("id", id);
 
-                NpgsqlConnection conn = DisposableConnection.Connection;
-                NpgsqlCommand cmd = new NpgsqlCommand("select * from sp_sel_uzytkownicy(:id)", conn);
-                cmd.Add(idParam);
+                var conn = DisposableConnection.Connection;
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "select * from sp_sel_uzytkownicy(:id)";
+                cmd.Parameters.Add(idParam);
 
                 return getUser(conn, ref cmd);
             }
         }
 
-        private Uzytkownik getUser(NpgsqlConnection conn, ref NpgsqlCommand cmd)
+        public void UpdatePrawa(int userID, string settings)
+        {
+            using (DisposableConnection)
+            {
+                var idParam = Parameter("id", userID);
+                var settingsParam = Parameter("settings", settings);
+
+                var cmd = DisposableConnection.CreateCommand("select sp_upd_many_prawa(:id, :settings)");
+                cmd.Parameters.Add(idParam);
+                cmd.Parameters.Add(settingsParam);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Uzytkownik> GetAll(int? prawo)
+        {
+            List<Uzytkownik> uzytkownicy = new List<Uzytkownik>();
+            using (DisposableConnection)
+            {
+                var prawoParam = Parameter("prawo", prawo);
+
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_all_uzytkownicy(:prawo)");
+
+                cmd.Parameters.Add(prawoParam);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Uzytkownik user = new Uzytkownik()
+                        {
+                            ID = int.Parse(reader[0].ToString()),
+                            nazwaUzytkownika = reader[1].ToString()
+                        };
+
+                        if (string.IsNullOrWhiteSpace(reader[2].ToString()) == false)
+                        {
+                            var lekarz = new Lekarz()
+                            {
+                                ID = int.Parse(reader[2].ToString()),
+                                Imie = reader[3].ToString(),
+                                Nazwisko = reader[4].ToString()
+                            };
+
+                            user.Lekarz = lekarz;
+                            user.LekarzID = lekarz.ID;
+                        }
+
+                        uzytkownicy.Add(user);
+                    }
+                }
+
+                return uzytkownicy;
+            }
+        }
+
+        private Uzytkownik getUser(DbConnection conn, ref DbCommand cmd)
         {
             var reader = cmd.ExecuteReader();
 
@@ -68,9 +133,9 @@ namespace PrzychodniaData.Repositories
             reader.Close();
 
             var idParam = Parameter("id", user.ID);
-
-            cmd = new NpgsqlCommand("select * from sp_sel_prawa(:id)", conn);
-            cmd.Add(idParam);
+            cmd = conn.CreateCommand();
+            cmd.CommandText = "select * from sp_sel_prawa(:id)";
+            cmd.Parameters.Add(idParam);
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -79,6 +144,15 @@ namespace PrzychodniaData.Repositories
 
                 user.Prawa.Add((PrawoUzytkownikaEnum)id);
             }
+
+            reader.Close();
+
+            
+            if(user.Is(PrawoUzytkownikaEnum.Kierownik) && user.LekarzID.HasValue)
+            {
+                user.Kierownicy = kierownikRepository.GetForLekarz(user.LekarzID.Value);
+            }
+            
 
 
             return user;
@@ -92,12 +166,13 @@ namespace PrzychodniaData.Repositories
                 var passParam = Parameter("haslo", password);
                 var lekarzParam = Parameter("lekarzid", lekarzID);
 
-                NpgsqlConnection conn = DisposableConnection.Connection;
+                var conn = DisposableConnection.Connection;
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "select sp_ins_uzytkownicy(:nazwa,:haslo, :lekarzid)";
 
-                NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_uzytkownicy(:nazwa,:haslo, :lekarzid)", conn);
-                cmd.Add(nameParam);
-                cmd.Add(passParam);
-                cmd.Add(lekarzParam);
+                cmd.Parameters.Add(nameParam);
+                cmd.Parameters.Add(passParam);
+                cmd.Parameters.Add(lekarzParam);
 
                 var result = cmd.ExecuteNonQuery();
 
@@ -116,16 +191,17 @@ namespace PrzychodniaData.Repositories
                 var lekarzDateParam = Parameter("data", lekarzBirthDate, NpgsqlTypes.NpgsqlDbType.Date);
                 var mezczyznaParam = Parameter("mezczyzna", mezczyzna);
 
-                NpgsqlConnection conn = DisposableConnection.Connection;
+                var conn = DisposableConnection.Connection;
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "select sp_ins_uzytkownicy(:nazwa,:haslo, :imie, :nazwisko, :pesel, :data, :mezczyzna)";
 
-                NpgsqlCommand cmd = new NpgsqlCommand("select sp_ins_uzytkownicy(:nazwa,:haslo, :imie, :nazwisko, :pesel, :data, :mezczyzna)", conn);
-                cmd.Add(nameParam);
-                cmd.Add(passParam);
-                cmd.Add(lekarzNameParam);
-                cmd.Add(lekarzSurnameParam);
-                cmd.Add(lekarzPeselParam);
-                cmd.Add(lekarzDateParam);
-                cmd.Add(mezczyznaParam);
+                cmd.Parameters.Add(nameParam);
+                cmd.Parameters.Add(passParam);
+                cmd.Parameters.Add(lekarzNameParam);
+                cmd.Parameters.Add(lekarzSurnameParam);
+                cmd.Parameters.Add(lekarzPeselParam);
+                cmd.Parameters.Add(lekarzDateParam);
+                cmd.Parameters.Add(mezczyznaParam);
 
 
                 var result = cmd.ExecuteNonQuery();

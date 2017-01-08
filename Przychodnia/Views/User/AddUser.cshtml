@@ -38,10 +38,8 @@
             </div>
             <div id="staryLekarz">
                 <div class="form-group">
-                    <label>Wybierz lekarza:</label>
-                    <select class="form-control">
-                        <option>Adam Adamski</option>
-                    </select>
+                    <label>Wybierz osobe:</label>
+                    @Html.DropDownListFor(m => m.OsobaID, Model.Osoby)
                 </div>
             </div>
 

@@ -2,6 +2,7 @@
 using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
@@ -26,12 +27,12 @@ namespace PrzychodniaData.Repositories
             }
         }
 
-        protected NpgsqlParameter Parameter<T>(string fieldName, T value)
+        internal static NpgsqlParameter Parameter<T>(string fieldName, T value)
         {
             return Parameter(fieldName, value, getDbType(value));
         }
 
-        protected NpgsqlParameter Parameter<T>(string fieldName, T value, NpgsqlDbType type)
+        internal static NpgsqlParameter Parameter<T>(string fieldName, T value, NpgsqlDbType type)
         {
             var param = new NpgsqlParameter(fieldName, type);
 
@@ -49,7 +50,7 @@ namespace PrzychodniaData.Repositories
 
         
 
-        protected NpgsqlDbType getDbType<T>(T param)
+        internal static NpgsqlDbType getDbType<T>(T param)
         {
             Type type = typeof(T);
 
@@ -82,6 +83,66 @@ namespace PrzychodniaData.Repositories
         public static void Add(this NpgsqlCommand cmd, NpgsqlParameter param)
         {
             cmd.Parameters.Add(param);
+        }
+
+        public static void Add<T>(this DbCommand cmd, string fieldName, T value)
+        {
+            var parameter = RepositoryBase.Parameter(fieldName, value);
+            cmd.Parameters.Add(parameter);
+        }
+
+        public static void Add<T>(this DbCommand cmd, string fieldName, T value, NpgsqlDbType type)
+        {
+            var parameter = RepositoryBase.Parameter(fieldName, value, type);
+            cmd.Parameters.Add(parameter);
+        }
+
+        public static int ToInt(this DbDataReader reader, string what)
+        {
+            return int.Parse(reader[what].ToString());
+        }
+
+        public static int ToInt(this DbDataReader reader, int what)
+        {
+            return int.Parse(reader[what].ToString());
+        }
+
+        public static string ToString(this DbDataReader reader, string what)
+        {
+            return reader[what].ToString();
+        }
+
+        public static string ToString(this DbDataReader reader, int what)
+        {
+            return reader[what].ToString();
+        }
+
+        public static DateTime? ToDate(this DbDataReader reader, string what)
+        {
+            if (string.IsNullOrWhiteSpace(reader[what].ToString()))
+                return null;
+
+            return DateTime.Parse(reader[what].ToString());
+        }
+
+        public static bool Exists(this DbDataReader reader, string what)
+        {
+            return string.IsNullOrWhiteSpace(reader[what].ToString()) == false;
+        }
+
+        public static DateTime? ToDate(this DbDataReader reader, int what)
+        {
+            if (string.IsNullOrWhiteSpace(reader[what].ToString()))
+                return null;
+
+            return DateTime.Parse(reader[what].ToString());
+        }
+
+        public static DbCommand CreateCommand(this DbConnection connection, string commandText)
+        {
+            DbCommand cmd = connection.CreateCommand();
+            cmd.CommandText = commandText;
+            return cmd;
         }
     }
 }

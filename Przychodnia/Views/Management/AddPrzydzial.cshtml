@@ -1,0 +1,34 @@
+﻿@model Przychodnia.Models.Przychodnie.AddPrzydzialViewModel
+
+
+@{
+    ViewBag.Title = "Dodaj przydział dla przychodni " + Model.Nazwa;
+}
+
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>@ViewBag.Title</h3>
+
+    </div>
+
+    <div class="panel-body">
+        <div>
+            @using(Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, new { przychodniaID = Model.PrzychodniaID }, FormMethod.Post, null))
+            {
+                @Html.HiddenFor(m => m.PrzychodniaID)
+                <fieldset>
+                    <div class="form-group">
+                        <label>Lekarz</label>
+                        @Html.DropDownListFor(m => m.LekarzID,Model.Lekarze, new { @class = "form-control" })
+                    </div>
+                    <button class="btn btn-success btn-lg btn-block">Dodaj przydział</button>
+                    <hr/>
+                    <a href="@Url.Action("Manage", RouteDataHelper.ControllerName, new { przychodniaID = Model.PrzychodniaID })" class="btn btn-info btn-lg btn-block">Wróc do zarządzania przychodnią</a>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>

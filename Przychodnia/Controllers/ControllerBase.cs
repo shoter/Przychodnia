@@ -21,6 +21,12 @@ namespace Przychodnia.Controllers
             TempDataHelper.AddMessage(TempData, message);
         }
 
+        protected ViewResult NullView()
+        {
+            object NULL = null;
+            return View(NULL);
+        }
+
         protected void AddMessage(string content, PopupMessageType type)
         {
             AddMessage(new PopupMessageViewModel(content, type));
@@ -29,6 +35,11 @@ namespace Przychodnia.Controllers
         protected void AddError(string content)
         {
             AddMessage(content, PopupMessageType.Error);
+        }
+
+        protected void AddError(Exception e)
+        {
+            AddError(e.Message);
         }
 
 

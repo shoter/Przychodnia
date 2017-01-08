@@ -69,10 +69,18 @@
   <ItemGroup>
     <Compile Include="Enums\PrawoUzytkownikaEnum.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Objects\Kierownik.cs" />
     <Compile Include="Objects\Lekarz.cs" />
+    <Compile Include="Objects\Osoba.cs" />
+    <Compile Include="Objects\Przychodnia.cs" />
+    <Compile Include="Objects\Przydzial.cs" />
     <Compile Include="Objects\Sesja.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PrzychodniaContext.cs" />
+    <Compile Include="Repositories\KierownikRepository.cs" />
+    <Compile Include="Repositories\LekarzRepository.cs" />
+    <Compile Include="Repositories\OsobaRepository.cs" />
+    <Compile Include="Repositories\PrzychodniaRepository.cs" />
     <Compile Include="Repositories\SesjaRepository.cs" />
     <Compile Include="Repositories\UzytkownikRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />

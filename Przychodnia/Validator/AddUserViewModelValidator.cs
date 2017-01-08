@@ -25,7 +25,7 @@ namespace Przychodnia.Validator
             {
                 if(validatePesel(model.Pesel) == false)
                 {
-                    AddError("Zły numer PESEL!", () => model.Pesel);
+                 //   AddError("Zły numer PESEL!", () => model.Pesel);
                 }
                 if(model.BirthDate.HasValue == false)
                 {
@@ -34,8 +34,8 @@ namespace Przychodnia.Validator
             }
             else
             {
-                if (model.LekarzID.HasValue == false)
-                    AddError("Musisz wybrać lekarza!");
+                if (model.OsobaID.HasValue == false)
+                    AddError("Musisz wybrać osobe!");
             }
 
             return IsValid;

@@ -1,4 +1,5 @@
 ﻿using PrzychodniaData.Enums;
+using PrzychodniaData.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,9 @@ namespace Data.Objects
         public int ID { get; set; }
         public string nazwaUzytkownika { get; set; }
         public int? LekarzID { get; set; }
+        public Lekarz Lekarz { get; set; }
         public List<PrawoUzytkownikaEnum> Prawa { get; set; } = new List<PrawoUzytkownikaEnum>();
+        public List<Kierownik> Kierownicy { get; set; } = new List<Kierownik>();
 
 
     }
