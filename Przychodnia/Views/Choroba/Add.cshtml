@@ -1,0 +1,58 @@
+﻿@model Przychodnia.Models.Choroby.AddChorobaViewModel
+
+
+@{
+    ViewBag.Title = "Dodaj wpis o chorobie";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dodaj wpis</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.PacjentID)
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.Notatka, new { @class = "form-control", placeholder = "Notatka" })
+                </div>
+                <div class="form-group">
+                    <label>Przychodnia</label>
+                    @Html.DropDownListFor(m => m.PrzychodnieID,Model.Przychodnie, new { @class = "form-control", placeholder = "Hasło" })
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input data-checkbox_hidener data-hide_element1="#staryDziennik" data-hide_element2="#nowyDziennik" name="NowyDziennik" id="NowyDziennik" type="checkbox" value="true" />
+                        Stwórz nowy dziennik
+                    </label>
+                </div>
+                <div id="staryDziennik">
+                    <div class="form-group">
+                        <label>Dziennik</label>
+                        @Html.DropDownListFor(m => m.DziennikID, Model.Dzienniki)
+                    </div>
+                </div>
+
+                <div id="nowyDziennik" style="display:none">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.NazwaDziennika, new { @class = "form-control", placeholder = "Nazwa dziennika" })
+                    </div>
+                    <div class="form-group">
+                        <label>Choroba (może pozostać pusta)</label>
+                        @Html.DropDownListFor(m => m.ChorobaID, Model.Choroby, new { @class = "form-control", placeholder = "Nazwisko" })
+                    </div>
+                </div>
+
+
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj wpis</button>
+            </fieldset>
+        }
+    </div>
+</div>

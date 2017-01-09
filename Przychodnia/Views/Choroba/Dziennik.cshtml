@@ -1,0 +1,85 @@
+﻿@model Przychodnia.Models.Choroby.DziennikViewModel
+
+@{
+    ViewBag.Title = "Dziennik";
+    int i = 0;
+}
+
+
+
+        <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Dziennik #@Model.Dziennik.ID: @Model.Dziennik.Nazwa - Choroba: @Model.Dziennik.NazwaChoroby</h3>
+
+    </div>
+
+    <div class="panel-body">
+        <div class="panel-group" role="tablist" id="accordion" aria-multiselectable="true">
+            @foreach(var status in Model.Statusy)
+            {
+                <div class="panel panel-default">
+                    <h4 class="panel-title"></h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse@(i)">
+                        @status.Data - @status.LekarzNazwisko @status.LekarzImie - @status.NazwaPrzychodni
+                    </a>
+                </div>
+                <div id="collapse@(i++)" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        @status.Notatka
+                    </div>
+
+                </div>
+            }
+        </div>
+
+        <div>
+            <a href="@Url.Action("Info", "Pacjent", new { pacjentID = Model.Dziennik.PacjentID })" class="btn btn-lg btn-block btn-default">Wróc do informacji o pacjencie</a>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dodaj wpis do dziennika</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Ajax.BeginForm("Add", RouteDataHelper.ControllerName, new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnComplete = "setTimeout(function(){location.reload();}, 1000);"
+        }
+        ))
+        {
+            @Html.Hidden("PacjentID", Model.Dziennik.PacjentID)
+            @Html.Hidden("DziennikID", Model.Dziennik.ID)
+
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.Notatka, new { @class = "form-control", placeholder = "Notatka" })
+                </div>
+                <div class="form-group">
+                    <label>Przychodnia</label>
+                    @Html.DropDownListFor(m => m.PrzychodnieID, Model.Przychodnie, new { @class = "form-control", placeholder = "Hasło" })
+                </div>
+
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj wpis</button>
+            </fieldset>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+       
+    </script>
+
+
+
+
+}

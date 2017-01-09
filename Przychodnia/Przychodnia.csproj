@@ -180,11 +180,15 @@
     <Compile Include="Attributes\PrzychodniaAuthorize.cs" />
     <Compile Include="Code\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AlertController.cs" />
+    <Compile Include="Controllers\ChorobaController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\MethodResult.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\OsobaController.cs" />
+    <Compile Include="Controllers\PacjentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="enums\PopupMessageType.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -194,9 +198,23 @@
     <Compile Include="Helpers\RouteDataHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Helpers\TempDataHelper.cs" />
+    <Compile Include="Helpers\TimeHelper.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
+    <Compile Include="Models\alerty\AlertListViewModel.cs" />
+    <Compile Include="Models\Choroby\AddChorobaViewModel.cs" />
+    <Compile Include="Models\Choroby\DziennikiListIndexViewModel.cs" />
+    <Compile Include="Models\Choroby\DziennikViewModel.cs" />
+    <Compile Include="Models\Choroby\NowaChorobaViewModel.cs" />
     <Compile Include="Models\Navigation\NavigationSectionViewModel.cs" />
     <Compile Include="Models\Navigation\TopViewModel.cs" />
+    <Compile Include="Models\Osoby\OsobyListViewModel.cs" />
+    <Compile Include="Models\Osoby\UsmiercViewModel.cs" />
+    <Compile Include="Models\Pacjenci\AddPacjentViewModel.cs" />
+    <Compile Include="Models\Pacjenci\IndexViewModel.cs" />
+    <Compile Include="Models\Pacjenci\InfoViewModel.cs" />
+    <Compile Include="Models\Pacjenci\PomiarViewModel.cs" />
+    <Compile Include="Models\Pacjenci\PomiaryListViewModel.cs" />
+    <Compile Include="Models\Pacjenci\PrzypiszPacjentaViewModel.cs" />
     <Compile Include="Models\PopupMessageViewModel.cs" />
     <Compile Include="Models\Przychodnie\AddPrzychodniaViewModel.cs" />
     <Compile Include="Models\Przychodnie\AddPrzydzialViewModel.cs" />
@@ -240,7 +258,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\Przychodnia.pubxml" />
@@ -250,6 +270,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -423,6 +445,19 @@
     <Content Include="Views\Management\Manage.cshtml" />
     <Content Include="Views\Shared\_BigLayout.cshtml" />
     <Content Include="Views\Management\AddPrzydzial.cshtml" />
+    <Content Include="Views\Pacjent\Add.cshtml" />
+    <Content Include="Views\Pacjent\Index.cshtml" />
+    <Content Include="Views\Pacjent\Pomiar.cshtml" />
+    <Content Include="Views\Pacjent\Info.cshtml" />
+    <Content Include="Views\Pacjent\Przypisz.cshtml" />
+    <Content Include="Views\Alert\Index.cshtml" />
+    <Content Include="Views\Choroba\Add.cshtml" />
+    <Content Include="Views\Choroba\Dziennik.cshtml" />
+    <Content Include="Views\Choroba\Index.cshtml" />
+    <Content Include="Views\Pacjent\Pomiary.cshtml" />
+    <Content Include="Views\Management\NowaChoroba.cshtml" />
+    <Content Include="Views\Osoba\Index.cshtml" />
+    <Content Include="Views\Osoba\Zabij.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

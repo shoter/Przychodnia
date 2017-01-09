@@ -195,6 +195,36 @@ namespace PrzychodniaData.Repositories
 
             return przydzialy;
         }
+
+        public List<Przydzial> GetActivePrzydzialy(int lekarzID )
+        {
+            using (DisposableConnection)
+            {
+
+                List<Przydzial> przydzialy = new List<Przydzial>();
+
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_active_przydzialy(:id)");
+                cmd.Add("id", lekarzID);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                    while (reader.Read())
+                    {
+                        var przydzial = new Przydzial()
+                        {
+                            PrzychodniaID = reader.ToInt("przychodniaid"),
+                            LekarzID = lekarzID,
+                            PoczatekPrzydzialu = reader.ToDate("poczatekdata").Value,
+                            KoniecPrzydzialu = reader.ToDate("koniecdata"),
+                            PrzychodniaNazwa = reader.ToString("przychodnianazwa")
+                        };
+
+                        przydzialy.Add(przydzial);
+                    }
+
+                return przydzialy;
+            }
+        }
     }
     
 }

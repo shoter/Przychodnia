@@ -12,10 +12,12 @@ namespace Przychodnia
     {
         protected void Application_Start()
         {
+            System.Web.Optimization.BundleTable.EnableOptimizations = false;
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
         }
     }
 }

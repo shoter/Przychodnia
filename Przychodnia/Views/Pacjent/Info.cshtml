@@ -1,0 +1,176 @@
+﻿@model Przychodnia.Models.Pacjenci.InfoViewModel
+
+@{ 
+    ViewBag.Title = "Informacje o pacjencie";
+    Layout = "~/Views/Shared/_BigLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Pomiary pracy serca</h3>
+
+            </div>
+
+            <div class="panel-body">
+                <div>
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="pracaSerca"></div>
+                    </div>
+                    <label>
+                        Skala po lewej - cisnienie <br/>
+                        Skala po prawej - tętno
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Ostatnie wizyty</h3>
+
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover" data-tables>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Data</td>
+                            <td>Nazwa dziennika</td>
+                            <td>Lekarz</td>
+                            <td>Przychodnia</td>
+                            <td>Choroba</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var chor in Model.Choroby)
+                        {
+                            <tr>
+                                <td title="Dziennik choroby"><a href="@Url.Action("Dziennik", "Choroba", new { dziennikID = chor.DziennikID })"><i class="fa fa-info-circle"></i></a> </td>
+                                <td>@chor.Data.ToShortDateString() @chor.Data.ToShortTimeString()</td>
+                                <td>@(chor.NazwaDziennika)(#@chor.DziennikID)</td>
+                                <td>@chor.LekarzNazwisko @chor.LekarzImie</td>
+                                <td>@chor.NazwaPrzychodni</td>
+                                <td>@chor.NazwaChoroby</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Notatki</h3>
+
+            </div>
+
+            <div class="panel-body">
+                <fieldset>
+                    <div class="form-group">
+                        @Html.TextArea("Notatki", "Ale", new { @class = "form-control" })
+                    </div>
+                    <button class="btn btn-block btn-lg btn-success">Zmień notatki</button>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section scripts {
+        <script type="text/javascript">
+            $(function () {
+                $('[data-tables]').DataTable({
+                    responsive: true
+                });
+            });
+
+            var tetno =
+
+
+               [
+                   @foreach(var pomiar in Model.Pomiary)
+        {
+            @:[@(pomiar.Data.AddHours(1).UnixTicks() * 1000), @pomiar.Tetno],
+            }
+               ]
+            var skurczowe =
+                [
+                    @foreach(var pomiar in Model.Pomiary)
+            {
+        @:[@(pomiar.Data.AddHours(1).UnixTicks() * 1000), @pomiar.Skurczowe],
+            }
+                ]
+            var rozkurczowe =
+            [
+                @foreach(var pomiar in Model.Pomiary)
+    {
+            @:[@(pomiar.Data.AddHours(1).UnixTicks() * 1000), @pomiar.Rozkurczowe],
+                    }
+            ]
+            $(function () {
+                var options = {
+                    series: {
+                        lines: {
+                            show: true
+                        },
+                        points: {
+                            show: true
+                        }
+                    },
+                    xaxis: {
+                        mode: "time",
+                        timeformat: "%m/%d"
+                    },
+                    yaxes: [{
+                        min: 0
+                    }, {
+                        // align if we are to the right
+                        alignTicksWithAxis: 1,
+                        position: "right"
+                    }],
+                    grid: {
+                        hoverable: true //IMPORTANT! this is needed for tooltip to work
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%s (%x : %y)"
+                    }
+                };
+
+                var plotobj = $.plot($("#pracaSerca"), [{
+                    data: tetno,
+                    label: "tętno",
+                    yaxis: 2
+                },
+                {
+                    data: skurczowe,
+                    label: "ciśnienie skurczowe"
+                },
+                {
+                    data: rozkurczowe,
+                    label: "ciśnienie rozkurczowe"
+                }
+
+                ], options);
+            })
+
+
+
+        </script>
+
+
+
+
+    }

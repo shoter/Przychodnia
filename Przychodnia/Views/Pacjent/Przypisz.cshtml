@@ -1,0 +1,27 @@
+﻿@model Przychodnia.Models.Pacjenci.PrzypiszPacjentaViewModel
+@{
+    ViewBag.Title = "Przypisz pacjenta";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Przypisz sobie pacjenta</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+            <fieldset>
+                <div class="form-group">
+                        <label>Pacjent</label>
+                        @Html.DropDownListFor(m => m.PacjentID,Model.Pacjenci, new { @class = "form-control" })
+                    </div>
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj przypisanie</button>
+            </fieldset>
+        }
+    </div>
+</div>

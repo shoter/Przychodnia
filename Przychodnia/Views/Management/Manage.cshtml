@@ -1,7 +1,7 @@
 ﻿@model Przychodnia.Models.Przychodnie.ManagePrzychodniaViewModel
 
 @{
-    ViewBag.Title = string.Format("Zarządzaj przychodnią {0}", Model.Nazwa);
+    ViewBag.Title = string.Format("Zarządzaj przychodnią {0}(Kierownik : {1} {2})", Model.Nazwa, Model.KierownikNazwisko, Model.KierownikImie);
     Layout = "~/Views/Shared/_BigLayout.cshtml";
 }
 
@@ -86,7 +86,8 @@
             </div>
         </div>
     </div>
-
+</div>
+<div class="row">
     <div class="col-lg-6 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -100,39 +101,26 @@
                         <thead>
                             <tr>
                                 <td></td>
-                                <td>ID</td>
-                                <td>Nazwa użytkownika</td>
-                                <td>LekarzID</td>
-                                <td>Imię</td>
-                                <td>Nazwisko</td>
+                                <td>Data</td>
+                                <td>Pacjent</td>
+                                <td>Lekarz</td>
+                                <td>Dziennik choroby</td>
+                                <td>Nazwa choroby</td>
                             </tr>
                         </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Ostatnie alerty</h3>
-
-            </div>
-
-            <div class="panel-body">
-                <div>
-                    <table class="table table-striped table-bordered table-hover" data-tables>
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td>ID</td>
-                                <td>Nazwa użytkownika</td>
-                                <td>LekarzID</td>
-                                <td>Imię</td>
-                                <td>Nazwisko</td>
-                            </tr>
-                        </thead>
+                        <tbody>
+                            @foreach(var wizyta in Model.Wizyty)
+                            {
+                                <tr>
+                                    <td title="Dziennik choroby"><a href="@Url.Action("Dziennik", "Choroba", new { dziennikID = wizyta.DziennikID })"><i class="fa fa-info-circle"></i></a> </td>
+                                    <td>@wizyta.Data.ToShortDateString() @wizyta.Data.ToShortTimeString()</td>
+                                    <td>@wizyta.PacjentNazwisko @wizyta.PacjentImie</td>
+                                    <td>@wizyta.LekarzNazwisko @wizyta.LekarzImie</td>
+                                    <td>@(wizyta.NazwaDziennika)(#@wizyta.DziennikID)</td>
+                                    <td>@wizyta.NazwaChoroby</td>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -151,14 +139,25 @@
                     <table class="table table-striped table-bordered table-hover" data-tables>
                         <thead>
                             <tr>
-                                <td></td>
-                                <td>ID</td>
-                                <td>Nazwa użytkownika</td>
-                                <td>LekarzID</td>
-                                <td>Imię</td>
-                                <td>Nazwisko</td>
+                                <td>Data</td>
+                                <td>Pacjent</td>
+                                <td>Ciśnienie skurczowe</td>
+                                <td>Ciśnienie rozkurczowe</td>
+                                <td>Tętno</td>
                             </tr>
                         </thead>
+                        <tbody>
+                            @foreach(var pomiar in Model.Pomiary)
+                            {
+                                <tr>
+                                    <td>@pomiar.Data.ToShortDateString() @pomiar.Data.ToShortTimeString()</td>
+                                    <td>@pomiar.PacjentNazwisko @pomiar.PacjentImie</td>
+                                    <td>@pomiar.Skurczowe</td>
+                                    <td>@pomiar.Rozkurczowe</td>
+                                    <td>@pomiar.Tetno</td>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -168,9 +167,10 @@
 
 @section scripts {
     <script type="text/javascript">
-
-        $('[data-tables]').DataTable({
-            responsive: true
+        $(function () {
+            $('table[data-tables]').DataTable({
+               
+            });
         });
     </script>
 

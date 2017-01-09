@@ -70,6 +70,9 @@ namespace Przychodnia.App_Start
             kernel.Bind<LekarzRepository>().ToSelf().InRequestScope();
             kernel.Bind<PrzychodniaRepository>().ToSelf().InRequestScope();
             kernel.Bind<KierownikRepository>().ToSelf().InRequestScope();
+            kernel.Bind<PacjentRepository>().ToSelf().InRequestScope();
+            kernel.Bind<AlertRepository>().ToSelf().InRequestScope();
+            kernel.Bind<ChorobaRepository>().ToSelf().InRequestScope();
         }        
     }
 }

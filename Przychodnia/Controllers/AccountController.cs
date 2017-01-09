@@ -27,8 +27,19 @@ namespace Przychodnia.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            AddMessage("Zaloguj się", enums.PopupMessageType.Warning);
-            return View();
+            try
+            {
+                AddMessage("Zaloguj się", enums.PopupMessageType.Warning);
+                var loginy = uzytkownikRepository.GetLoginInfo();
+                var vm = new LoginViewModel(loginy);
+                return View(vm);
+            }
+            catch(Exception e)
+            {
+                AddError(e);
+                return View(new LoginViewModel());
+            }
+            
         }
 
         [HttpPost]
@@ -46,6 +57,8 @@ namespace Przychodnia.Controllers
                 else
                 {
                     AddError("Login użytkownika lub/i hasło są nieprawidłowe!");
+                    var loginy = uzytkownikRepository.GetLoginInfo();
+                    vm = new LoginViewModel(loginy);
                 }
 
             } catch(Exception e)

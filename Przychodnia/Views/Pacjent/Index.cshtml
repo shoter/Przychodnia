@@ -1,0 +1,63 @@
+﻿@model Przychodnia.Models.Pacjenci.IndexViewModel
+
+@{
+    ViewBag.Title = string.Format("Lista pacjentów");
+    Layout = "~/Views/Shared/_BigLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Lista pacjentów</h3>
+
+            </div>
+
+            <div class="panel-body">
+                <div>
+                    <table class="table table-striped table-bordered table-hover" data-tables>
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Pacjent</td>
+                                <td>Data urodzenia</td>
+                                <td>Notatki</td>
+                                <td>Pesel</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var pacjent in Model.Pacjenci)
+                            {
+                                <tr>
+                                    <td >
+                                        <a title="Zrób pomiar pracy serca" href="@Url.Action("Pomiar", new { pacjentID = pacjent.ID })"><i class="fa fa-heart"></i></a>
+                                        <a title="Przeprowadź badanie" href="@Url.Action("Add", "Choroba", new { pacjentID = pacjent.ID })"><i class="fa fa-medkit"></i></a>
+                                        <a title="Informacje" href="@Url.Action("Info", new { pacjentID = pacjent.ID })"><i class="fa fa-info-circle"></i></a>
+                                    </td>
+                                    <td><i class="fa @(pacjent.mezczyzna ? "fa-mars" : "fa-venus")"></i></td>
+                                    <td>@pacjent.Nazwisko @pacjent.Imie</td>
+                                    <td>@pacjent.DataUrodzenia</td>
+                                    <td>@(string.IsNullOrWhiteSpace(pacjent.Notatki) == false ? pacjent.Notatki.Substring(0, Math.Min(pacjent.Notatki.Length, 50)) + " ..." : "")</td>
+                                    <td>@pacjent.Pesel</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <span>Lista pokazuje jedynie przypisanych tobie pacjentów.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $('[data-tables]').DataTable({
+            responsive: true
+        });
+    </script>
+
+}

@@ -2,6 +2,7 @@
 using Przychodnia.Helpers;
 using Przychodnia.Models.Navigation;
 using PrzychodniaData.Enums;
+using PrzychodniaData.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ namespace Przychodnia.Controllers
 {
     public class NavigationController : Controller
     {
+        private readonly AlertRepository alertRepository;
+
+        public NavigationController(AlertRepository alertRepository)
+        {
+            this.alertRepository = alertRepository;
+        }
+
         public PartialViewResult RenderNavigation()
         {
             var vm = new NavigationSectionViewModel();
@@ -63,6 +71,8 @@ namespace Przychodnia.Controllers
                 };
 
 
+
+
                 var medicalManagement = new NavigationSectionViewModel()
                 {
                     Name = "Zarządzanie przychodniami",
@@ -83,6 +93,14 @@ namespace Przychodnia.Controllers
                     Icon = "fa fa-medkit",
                     Url = Url.Action("Index", "Management")
                 };
+
+
+                var osoby = new NavigationSectionViewModel()
+                {
+                    Name = "Lista osób",
+                    Icon = "fa fa-list",
+                    Url = Url.Action("Index", "Osoba")
+                }; vm.Add(osoby);
 
                 medicalManagement.Add(addMedical);
                 medicalManagement.Add(medicals);
@@ -115,6 +133,14 @@ namespace Przychodnia.Controllers
                     
                 }
 
+                var chorobaAdd = new NavigationSectionViewModel()
+                {
+                    Name = "Dodaj nowy typ choroby",
+                    Url = Url.Action("NowaChoroba", "Management")
+                };
+
+                manager.Add(chorobaAdd);
+
                 
             }
 
@@ -145,42 +171,24 @@ namespace Przychodnia.Controllers
                     Url = Url.Action("Add", "Pacjent")
                 }; pacjenci.Add(dodaj);
 
+                var przypisz = new NavigationSectionViewModel()
+                {
+                    Name = "Przypisz pacjenta",
+                    Url = Url.Action("Przypisz", "Pacjent")
+                }; pacjenci.Add(przypisz);
+
                 var choroby = new NavigationSectionViewModel()
                 {
-                    Name = "Choroby",
-                    Icon = "fa fa-medkit"
-                }; manager.Add(choroby);
-
-                var dziennik = new NavigationSectionViewModel()
-                {
                     Name = "Dzienniki chorób",
-                    Icon = "fa fa-address-book",
+                    Icon = "fa fa-book",
                     Url = Url.Action("Index", "Choroba")
-                }; choroby.Add(dziennik);
-
-                var dodajWpis = new NavigationSectionViewModel()
-                {
-                    Name = "Dodaj wpis",
-                    Url = Url.Action("Add", "Choroba")
-                }; choroby.Add(dodajWpis);
+                }; manager.Add(choroby);
 
                 var pomiary = new NavigationSectionViewModel()
                 {
-                    Name = "Pomiary",
-                    Icon = "fa fa-heartbeat"
-                };manager.Add(pomiary);
-
-                var pomiaryAdd = new NavigationSectionViewModel()
-                {
                     Name = "Dodaj nowy pomiar",
-                    Url = Url.Action("Dodaj", "Pomiar")
-                }; pomiary.Add(pomiaryAdd);
-
-                var pomiaryList = new NavigationSectionViewModel()
-                {
-                    Name = "Lista pomiarów",
-                    Url = Url.Action("Index", "Pomiar")
-                }; pomiary.Add(pomiaryList);
+                    Url = Url.Action("Pomiar", "Pacjent")
+                };manager.Add(pomiary);
 
                 
             }
@@ -194,6 +202,10 @@ namespace Przychodnia.Controllers
 
             var vm = new TopViewModel(user);
 
+            if(SessionHelper.Uzytkownik.LekarzID.HasValue)
+            {
+                vm.Alerty = alertRepository.GetAlerts(SessionHelper.Uzytkownik.LekarzID.Value, 5);
+            }
             return PartialView(vm);
         }
     }

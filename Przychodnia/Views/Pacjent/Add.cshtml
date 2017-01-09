@@ -1,0 +1,58 @@
+﻿@model Przychodnia.Models.Pacjenci.AddPacjentViewModel
+
+@{ 
+    ViewBag.Title = "Dodaj pacjenta";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dodaj pacjenta</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Imie, new { @class = "form-control", placeholder = "Imię" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Nazwisko, new { @class = "form-control", placeholder = "Nazwisko" })
+                </div>
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.CzyMezczyzna)
+                        Czy mężczyzna?
+                    </label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Pesel, new { @class = "form-control", placeholder = "Pesel" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.DataUrodzenia, new { @class = "form-control datepicker", placeholder = "Data urodzenia" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.DataZgonu, new { @class = "form-control datepicker", placeholder = "Data zgonu" })
+                </div>
+
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", placeholder = "notatki" })
+                </div>
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj pacjenta</button>
+            </fieldset>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+    </script>
+}

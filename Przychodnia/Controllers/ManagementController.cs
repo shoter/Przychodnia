@@ -1,6 +1,7 @@
 ﻿using Data.Objects;
 using Przychodnia.Attributes;
 using Przychodnia.Helpers;
+using Przychodnia.Models.Choroby;
 using Przychodnia.Models.Przychodnie;
 using PrzychodniaData.Enums;
 using PrzychodniaData.Repositories;
@@ -15,11 +16,15 @@ namespace Przychodnia.Controllers
     public class ManagementController : ControllerBase
     {
         private readonly PrzychodniaRepository przychodniaRepository;
+        private readonly PacjentRepository pacjentRepository;
         private readonly LekarzRepository lekarzRepository;
-        public ManagementController(PrzychodniaRepository przychodniaRepository, LekarzRepository lekarzRepository)
+        private readonly ChorobaRepository chorobaRepository;
+        public ManagementController(PrzychodniaRepository przychodniaRepository, LekarzRepository lekarzRepository, PacjentRepository pacjentRepository, ChorobaRepository chorobaRepository)
         {
             this.przychodniaRepository = przychodniaRepository;
             this.lekarzRepository = lekarzRepository;
+            this.pacjentRepository = pacjentRepository;
+            this.chorobaRepository = chorobaRepository;
         }
         [PrzychodniaAuthorize(PrawoUzytkownikaEnum.Kierownik)]
         [HttpGet]
@@ -87,16 +92,20 @@ namespace Przychodnia.Controllers
                 return NotAble();
 
                 var lekarze = lekarzRepository.GetMany(przychodniaID);
-            var przychodnia = przychodniaRepository.Get(przychodniaID);
+                var przychodnia = przychodniaRepository.Get(przychodniaID);
+                var pomiary = pacjentRepository.GetPomiaryForPrzychodnia(przychodniaID);
+                var wizyty = chorobaRepository.GetStatusyForPrzychodnia(przychodniaID);
 
-            var vm = new ManagePrzychodniaViewModel(przychodnia, lekarze);
 
-            return View(vm);
+                var vm = new ManagePrzychodniaViewModel(przychodnia, lekarze, pomiary, wizyty);
+
+                return View(vm);
             }
             catch(Exception e)
             {
                 AddError(e.Message);
-                return View(new ManagePrzychodniaViewModel(new PrzychodniaData.Objects.Przychodnia(), new List<PrzychodniaData.Objects.Lekarz>()));
+                return View(new ManagePrzychodniaViewModel(new PrzychodniaData.Objects.Przychodnia(), new List<PrzychodniaData.Objects.Lekarz>(), new List<PrzychodniaData.Objects.Pomiar>()
+                    ,new List<PrzychodniaData.Objects.StatusChoroby>()));
             }
 }
 
@@ -140,6 +149,44 @@ namespace Przychodnia.Controllers
             {
                 AddError(e);
                 return RedirectBack();
+            }
+        }
+
+        [PrzychodniaAuthorize(PrawoUzytkownikaEnum.Kierownik)]
+        [HttpGet]
+        public ActionResult NowaChoroba()
+        {
+            try
+            {
+                var choroby = chorobaRepository.GetChoroby();
+                var vm = new NowaChorobaViewModel(choroby);
+
+                return View(vm);
+            }
+            catch(Exception e)
+            {
+                AddError(e);
+                return View(new NowaChorobaViewModel());
+            }
+        }
+
+        [PrzychodniaAuthorize(PrawoUzytkownikaEnum.Kierownik)]
+        [HttpPost]
+        public ActionResult NowaChoroba(NowaChorobaViewModel vm)
+        {
+            try
+            {
+                chorobaRepository.InsertChoroba(vm.Nazwa);
+                AddSuccess("Dodano nowy typ choroby.");
+
+                var choroby = chorobaRepository.GetChoroby();
+                vm.Choroby = choroby;
+                return View(vm);
+            }
+            catch(Exception e)
+            {
+                AddError(e);
+                return View(new NowaChorobaViewModel());
             }
         }
 

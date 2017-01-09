@@ -1,0 +1,61 @@
+﻿@model Przychodnia.Models.Choroby.NowaChorobaViewModel
+
+    @{
+        ViewBag.Title = "Dodaj nowy typ choroby";
+    }
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Nowy typ choroby</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+            {
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Nazwa, new { @class = "form-control", placeholder = "Nazwa choroby" })
+                </div>
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj nową chorobe</button>
+            </fieldset>
+        }
+    </div>
+</div>
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Zdefiniowane typy chorób</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover" data-tables>
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var choroba in Model.Choroby)
+                {
+                    <tr>
+                        <td>@choroba.Nazwa</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('table[data-tables]').DataTable({
+
+            });
+        });
+    </script>
+
+}

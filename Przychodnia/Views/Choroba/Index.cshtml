@@ -1,0 +1,51 @@
+﻿@model Przychodnia.Models.Choroby.DziennikiListIndexViewModel
+@{
+    ViewBag.Title = "Dzienniki chorób";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Ostatnie pomiary</h3>
+
+    </div>
+
+    <div class="panel-body">
+        <div>
+            <table class="table table-striped table-bordered table-hover" data-tables>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>ID</td>
+                        <td>Nazwa</td>
+                        <td>Pacjent</td>
+                        <td>Nazwa choroby</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var dziennik in Model.Dzienniki)
+                    {
+                        <tr>
+                            <td title="Dziennik choroby"><a href="@Url.Action("Dziennik", "Choroba", new { dziennikID = dziennik.ID })"><i class="fa fa-info-circle"></i></a> </td>
+                            <td>@dziennik.ID</td>
+                            <td>@dziennik.Nazwa</td>
+                            <td>@dziennik.PacjentNazwisko @dziennik.PacjentImie</td>
+                            <td>@dziennik.NazwaChoroby</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('table[data-tables]').DataTable({
+
+            });
+        });
+    </script>
+
+}

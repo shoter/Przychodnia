@@ -130,6 +130,13 @@ namespace PrzychodniaData.Repositories
             return string.IsNullOrWhiteSpace(reader[what].ToString()) == false;
         }
 
+        public static bool toBool(this DbDataReader reader, string what)
+        {
+            var val = reader.ToString(what).Trim().ToLower();
+
+            return val == "true";
+        }
+
         public static DateTime? ToDate(this DbDataReader reader, int what)
         {
             if (string.IsNullOrWhiteSpace(reader[what].ToString()))

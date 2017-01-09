@@ -22,35 +22,33 @@ namespace PrzychodniaData.Repositories
         public Sesja Get(string cookie)
         {
             var cookieParam = Parameter("ciastko", cookie);
-
-            var conn = Context.Database.Connection;
-            conn.Open();
-            var cmd = conn.CreateCommand();
-            cmd.CommandText = "select * from sp_sel_sesje(:ciastko)";
-
-            cmd.Parameters.Add(cookieParam);
-
-            var reader = cmd.ExecuteReader();
-
-            if (reader.Read() == false)
-                return null;
-
-
-            Sesja sesja = new Sesja()
+            using (DisposableConnection)
             {
-                ID = int.Parse(reader[0].ToString()),
-                IP = reader[1].ToString(),
-                Ciasteczko = reader[2].ToString(),
-                DataWygasniecia = DateTime.Parse(reader[3].ToString()),
-                UzytkownikID = int.Parse(reader[4].ToString())
-            };
-            conn.Close();
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_sesje(:ciastko)");
+                cmd.Parameters.Add(cookieParam);
 
-            var user = uzytkownikRepository.Get(sesja.UzytkownikID);
+                var reader = cmd.ExecuteReader();
 
-            sesja.Uzytkownik = user;
+                if (reader.Read() == false)
+                    return null;
 
-            return sesja;
+
+                Sesja sesja = new Sesja()
+                {
+                    ID = int.Parse(reader[0].ToString()),
+                    IP = reader[1].ToString(),
+                    Ciasteczko = reader[2].ToString(),
+                    DataWygasniecia = DateTime.Parse(reader[3].ToString()),
+                    UzytkownikID = int.Parse(reader[4].ToString())
+                };
+                reader.Close();
+
+                var user = uzytkownikRepository.Get(sesja.UzytkownikID);
+
+                sesja.Uzytkownik = user;
+
+                return sesja;
+            }
         }
 
         public void Update(int id, DateTime data)

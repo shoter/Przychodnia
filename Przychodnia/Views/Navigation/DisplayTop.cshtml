@@ -25,15 +25,28 @@
                 <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-alerts">
+                @foreach (var alert in Model.Alerty)
+                {
+                    <li>
+                        <a>
+                            <div>
+                                <i class="fa fa-user"> @alert.Nazwisko @alert.Imie</i><br/>
+                                <i class="fa fa-warning fa-fw"></i> @alert.Message
+                                <span class="pull-right text-muted small">@alert.Date.ToShortDateString() @alert.Date.ToShortTimeString()</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                }
+               
                 <li>
-                    <a href="#">
+                    <a class="text-center" href="@Url.Action("Index", "Alert")">
                         <div>
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small">4 minutes ago</span>
+                            <strong>Zobacz wszystkie alerty (tylko lekarz)</strong>
+                            <i class="fa fa-angle-right"></i>
                         </div>
                     </a>
                 </li>
-                <li class="divider"></li>
             </ul>
             <!-- /.dropdown-alerts -->
         </li>

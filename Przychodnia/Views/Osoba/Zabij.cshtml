@@ -1,0 +1,38 @@
+﻿@model Przychodnia.Models.Osoby.UsmiercViewModel
+
+
+@{
+    ViewBag.Title = "Uśmierc osobe";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Uśmierć @Model.Imie @Model.Nazwisko (Data urodzenia : @Model.DataNarodzin)</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @Html.ValidationSummary()
+        </div>
+        @using (Html.BeginForm(RouteDataHelper.ActionName, RouteDataHelper.ControllerName, FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.OsobaID)
+            <fieldset>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Date, new { @class = "form-control datepicker", placeholder = "Data zgonu" })
+                </div>
+                <!-- Change this to a button or input when using this as a form -->
+                <button class="btn btn-lg btn-success btn-block">Dodaj użytkownika</button>
+            </fieldset>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+    </script>
+}

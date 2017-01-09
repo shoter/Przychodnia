@@ -21,6 +21,31 @@ namespace PrzychodniaData.Repositories
             this.kierownikRepository = kierownikRepository;
         }
 
+
+        public List<LoginInfo> GetLoginInfo()
+        {
+            using (DisposableConnection)
+            {
+
+                List<LoginInfo> loginy = new List<LoginInfo>();
+
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_all_logininfo()");
+
+                var reader = cmd.ExecuteReader();
+
+                if(reader.HasRows)
+                    while(reader.Read())
+                    {
+                        loginy.Add(new LoginInfo()
+                        {
+                            Login = reader.ToString("login"),
+                            Password = reader.ToString("password")
+                        });
+                    }
+
+                return loginy;
+            }
+        }
         public Uzytkownik Get(string username, string password)
         {
             using (DisposableConnection)

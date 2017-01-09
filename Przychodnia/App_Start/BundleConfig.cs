@@ -12,7 +12,8 @@ namespace Przychodnia
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -31,8 +32,14 @@ namespace Przychodnia
                       "~/vendor/datatables/js/jquery.dataTables.min.js",
                       "~/Scripts/data.js",
                       "~/Scripts/przychodnia.hidener.js",
-                      "~/Scripts/jquery-ui.js"
+                      "~/Scripts/jquery-ui.js",
 
+                      "~/vendor/flot/excanvas.min.js",
+                      "~/vendor/flot/jquery.flot.js",
+                      "~/vendor/flot/jquery.flot.pie.js",
+                      "~/vendor/flot/jquery.flot.resize.js",
+                      "~/vendor/flot/jquery.flot.time.js",
+                      "~/vendor/flot-tooltip/jquery.flot.tooltip.min.js"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

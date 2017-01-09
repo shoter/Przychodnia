@@ -40,7 +40,9 @@ namespace PrzychodniaData.Repositories
                         {
                             ID = reader.ToInt("id"),
                             Nazwa = reader.ToString("nazwa"),
-                            IloscLekarzy = reader.ToInt("lekarzeilosc")
+                            IloscLekarzy = reader.ToInt("lekarzeilosc"),
+                            KierownikImie = reader.ToString("kierownikimie"),
+                            KierownikNazwisko = reader.ToString("kierowniknazwisko")
                         };
                     }
                 }
