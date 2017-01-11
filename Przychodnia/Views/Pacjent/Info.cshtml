@@ -75,15 +75,24 @@
                 <h3>Notatki</h3>
 
             </div>
-
+@using (Ajax.BeginForm("Notatka", RouteDataHelper.ControllerName, new AjaxOptions()
+{
+    HttpMethod = "POST",
+    OnComplete = "alert('Notatka zapisana!');",
+    OnFailure = "alert('Jakis blad');"
+}
+                    ))
+{
             <div class="panel-body">
+                @Html.HiddenFor(m => m.PacjentID)
                 <fieldset>
                     <div class="form-group">
-                        @Html.TextArea("Notatki", "Ale", new { @class = "form-control" })
+                        @Html.TextArea("Notatki", Model.Notatki, new { @class = "form-control" })
                     </div>
                     <button class="btn btn-block btn-lg btn-success">Zmień notatki</button>
                 </fieldset>
             </div>
+}
         </div>
     </div>
 </div>

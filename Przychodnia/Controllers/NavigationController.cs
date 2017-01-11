@@ -116,11 +116,15 @@ namespace Przychodnia.Controllers
                     Name = "Kierownik",
                     Icon = "fa fa-suitcase"
                 }; vm.Add(manager);
+                
                 var przychodnie = new NavigationSectionViewModel()
                 {
                     Name = "Przychodnie",
                     Icon = "fa fa-medkit"
-                }; manager.Add(przychodnie);
+                };
+
+                if(SessionHelper.Uzytkownik.Kierownicy.Count > 0)
+                    manager.Add(przychodnie);
 
                 foreach (var kierownik in SessionHelper.Uzytkownik.Kierownicy)
                 {

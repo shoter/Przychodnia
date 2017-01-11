@@ -205,6 +205,7 @@
     <Compile Include="Models\Choroby\DziennikiListIndexViewModel.cs" />
     <Compile Include="Models\Choroby\DziennikViewModel.cs" />
     <Compile Include="Models\Choroby\NowaChorobaViewModel.cs" />
+    <Compile Include="Models\Home\HomeViewModel.cs" />
     <Compile Include="Models\Navigation\NavigationSectionViewModel.cs" />
     <Compile Include="Models\Navigation\TopViewModel.cs" />
     <Compile Include="Models\Osoby\OsobyListViewModel.cs" />

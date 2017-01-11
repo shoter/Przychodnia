@@ -215,7 +215,8 @@ namespace Przychodnia.Controllers
             {
                 var pomiary = pacjentRepository.GetPomiary(pacjentID);
                 var choroby = chorobaRepository.GetStatusyForPacjent(pacjentID);
-                var vm = new InfoViewModel(pomiary, choroby);
+                var notatki = pacjentRepository.GetNotatki(pacjentID);
+                var vm = new InfoViewModel(pomiary, choroby, notatki, pacjentID);
 
                 return View(vm);
             } catch(Exception e)
@@ -224,6 +225,20 @@ namespace Przychodnia.Controllers
                 return RedirectBack();
             }
 
+        }
+
+        [HttpPost]
+        public JsonResult Notatka(string notatki, int pacjentID)
+        {
+            try
+            {
+                pacjentRepository.UpdateNotatki(pacjentID, notatki);
+                return new JsonResult();
+            } catch(Exception e)
+            {
+                AddError(e);
+                return new JsonResult();
+            }
         }
     }
 }

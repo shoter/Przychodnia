@@ -1,6 +1,27 @@
-﻿@{
+﻿@model Przychodnia.Models.Home.HomeViewModel
+@{
     ViewBag.Title = "Home Page";
+    int i = 0;
 }
+
+
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Najlepsi!</h3>
+
+        </div>
+
+        <div class="panel-body">
+            <div>
+                <div class="flot-chart">
+                    <div class="flot-chart-content" id="najlepsi"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="text-center" style="font-size:xx-large">
     Powered by:
@@ -39,3 +60,51 @@
     </div>
 
 </div>
+@section scripts {
+    <script type="text/javascript">
+
+        var najlepsi =
+        [
+        @foreach (var lekarz in Model.NajlepsiLekarze)
+{
+    @:[@(i++), @lekarz.IloscPacjentow],
+        }
+    @{ i = 0;}
+        ];
+    $(function () {
+        var options = {
+            series: {
+                bars : {show:true}
+            },
+            bars : {
+                align: "center",
+                barWidth : 0.5
+            },
+            xaxis: {
+                ticks: [
+            @foreach (var lekarz in Model.NajlepsiLekarze)
+            {
+                @:[@(i++),"@lekarz.Nazwisko @lekarz.Imie"],
+            }
+                ]
+            },
+            grid: {
+                hoverable: true //IMPORTANT! this is needed for tooltip to work
+            },
+            legend: {
+                show: false
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%x - ilość pacjentów: %y"
+            }
+        };
+
+        var plotobj = $.plot($("#najlepsi"), [{
+            data: najlepsi,
+            label: "Lekarze z największą ilością pacjentów"
+        }], options);
+    });
+
+    </script>
+}

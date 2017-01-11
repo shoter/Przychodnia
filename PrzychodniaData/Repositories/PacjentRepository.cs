@@ -13,7 +13,35 @@ namespace PrzychodniaData.Repositories
         public PacjentRepository(PrzychodniaContext context) : base(context)
         {
         }
+        public string GetNotatki(int pacjentID)
+        {
+            using (DisposableConnection)
+            {
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_pacjent_notatki(:pacjentID)");
+                cmd.Add("pacjentID", pacjentID);
 
+                var reader = cmd.ExecuteReader();
+
+                if(reader.HasRows && reader.Read())
+                {
+                    var notatki = reader.ToString("notatki");
+                    return notatki;
+                }
+            }
+            throw new Exception("Nie znaleziono notatek? Ten błąd nie powinien wystąpić.");
+        }
+
+        public void UpdateNotatki(int pacjentID, string notatki)
+        {
+            using (DisposableConnection)
+            {
+                var cmd = DisposableConnection.CreateCommand("select sp_upd_pacjent_notatki(:pacjentID, :notatki)");
+                cmd.Add("pacjentID", pacjentID);
+                cmd.Add("notatki", notatki);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
         public void Insert(string imie, string nazwisko, string pesel, bool czymezczyzna, DateTime dataurodzenia, DateTime? datazgonu, string notes)
         {
             using (DisposableConnection)

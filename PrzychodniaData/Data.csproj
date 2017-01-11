@@ -74,6 +74,7 @@
     <Compile Include="Objects\Kierownik.cs" />
     <Compile Include="Objects\Lekarz.cs" />
     <Compile Include="Objects\LoginInfo.cs" />
+    <Compile Include="Objects\NajlepszyLekarz.cs" />
     <Compile Include="Objects\Osoba.cs" />
     <Compile Include="Objects\Pacjent.cs" />
     <Compile Include="Objects\Pomiar.cs" />

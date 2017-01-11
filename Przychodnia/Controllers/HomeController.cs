@@ -1,4 +1,5 @@
 ﻿using Przychodnia.Attributes;
+using Przychodnia.Models.Home;
 using PrzychodniaData;
 using PrzychodniaData.Enums;
 using PrzychodniaData.Repositories;
@@ -14,16 +15,21 @@ namespace Przychodnia.Controllers
     public class HomeController : Controller
     {
         private readonly UzytkownikRepository uzytkownikRepository;
+        private readonly LekarzRepository lekarzRepository;
 
-        public HomeController(UzytkownikRepository uzytkownikRepository)
+        public HomeController(UzytkownikRepository uzytkownikRepository, LekarzRepository lekarzRepository)
         {
             this.uzytkownikRepository = uzytkownikRepository;
+            this.lekarzRepository = lekarzRepository;
         }
 
         [PrzychodniaAuthorize]
         public ActionResult Index()
         {
-            return View();
+            var lekarze = lekarzRepository.GetNajlepsiLekarze();
+            var vm = new HomeViewModel(lekarze);
+
+            return View(vm);
         }
 
 

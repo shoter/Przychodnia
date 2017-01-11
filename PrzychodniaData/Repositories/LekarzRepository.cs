@@ -29,6 +29,37 @@ namespace PrzychodniaData.Repositories
             }
         }
 
+        public List<NajlepszyLekarz> GetNajlepsiLekarze()
+        {
+            using (DisposableConnection)
+            {
+                List<NajlepszyLekarz> lekarze = new List<NajlepszyLekarz>();
+
+                var cmd = DisposableConnection.CreateCommand("select * from sp_sel_best_lekarze()");
+
+                var reader = cmd.ExecuteReader();
+
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        var lekarz = new NajlepszyLekarz()
+                        {
+                            Imie = reader.ToString("imie"),
+                            Nazwisko = reader.ToString("nazwisko"),
+                            IloscPacjentow = reader.ToInt("iloscPacjentow")
+                        };
+
+
+                        lekarze.Add(lekarz);
+
+                    }
+                }
+
+                return lekarze;
+            }
+        }
+
         public void Fire(int przychodniaID, int lekarzID)
         {
             using (DisposableConnection)
