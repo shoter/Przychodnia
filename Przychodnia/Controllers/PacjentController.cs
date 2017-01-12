@@ -228,16 +228,16 @@ namespace Przychodnia.Controllers
         }
 
         [HttpPost]
-        public JsonResult Notatka(string notatki, int pacjentID)
+        public ActionResult Notatka(string notatki, int pacjentID)
         {
             try
             {
                 pacjentRepository.UpdateNotatki(pacjentID, notatki);
-                return new JsonResult();
+                return RedirectBack();
             } catch(Exception e)
             {
                 AddError(e);
-                return new JsonResult();
+                return RedirectBack();
             }
         }
     }
